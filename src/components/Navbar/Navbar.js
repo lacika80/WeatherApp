@@ -6,20 +6,20 @@ import Grid from '@mui/material/Grid';
 export default function Navbar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{ mb: 2 }}>
+            {/* <AppBar position="static" sx={{ mb: 2 }}>
                 <Toolbar>
                     <Grid justifyContent="space-between" container  alignItems="center">
                         <Grid item>
-                           {/*  <Button color="inherit" component={Link} to="/">
+                            <Button color="inherit" component={Link} to="/">
                                 Étterem választó 
                             </Button>
                             <Button color="inherit" component={Link} to="/userlist">
                                Felhasználók
-                            </Button> */}
+                            </Button>
                         </Grid>
                     </Grid>
                 </Toolbar>
-            </AppBar>
+            </AppBar> */}
             <Outlet />
         </Box>
     );

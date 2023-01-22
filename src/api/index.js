@@ -1,14 +1,14 @@
 import axios from "axios";
 import dataNow from "../dataNow.json";
 import dataForecast from "../dataForecast.json";
+const API = axios.create();
+export const getWeather = () => API.get(process.env.REACT_APP_API_URL_NOW);
+export const getForecast = () => API.get(process.env.REACT_APP_API_URL_FORECAST);
 
-/*export const getWeather = () => API.get(process.env.REACT_APP_API_URL_NOW); 
-export const getForecast = () => API.get(process.env.REACT_APP_API_URL_FORECAST);*/
-
-export const getWeather = () => {
+/*export const getWeather = () => {
     return dataNow;
 };
 
-export const getForecast = () => {
+ export const getForecast = () => {
     return dataForecast;
-}; 
+};  */

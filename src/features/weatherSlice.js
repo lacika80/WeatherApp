@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "../api/index";
-const initialState = { now: {}, forecast: {} };
+const initialState = { now: { status: "" }, forecast: { status: "" } };
 
 export const getWeather = createAsyncThunk("/", async (_, thunkAPI) => {
     const response = await api.getWeather();
