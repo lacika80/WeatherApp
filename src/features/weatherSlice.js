@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "../api/index";
+const initialState = { now: {}, forecast: {} };
 
-const initialState = {};
-
-export const getWeather = createAsyncThunk("/", async (_,thunkAPI) => {
+export const getWeather = createAsyncThunk("/", async (_, thunkAPI) => {
     const response = await api.getWeather();
-    if (response.statusCode == 403) {
-        thunkAPI.dispatch(logout())
-        return { error: "Forbidden" };
-    } else return { data: response.data, status: response.status, error: response?.errormessage };
+    if (response.status != 200) thunkAPI.rejectWithValue(response);
+    else return response;
+});
+export const getForecast = createAsyncThunk("/forecast", async (_, thunkAPI) => {
+    const response = await api.getForecast();
+    if (response.status != 200) thunkAPI.rejectWithValue(response);
+    else return response;
 });
 
 export const weatherSlice = createSlice({
@@ -18,25 +20,35 @@ export const weatherSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(getWeather.fulfilled, (state, action) => {
-                console.log(action.payload);
-                if (action.payload.error) {
-                    state.status = "failed";
-                    state.error = action.payload.error;
-                    delete state.users;
-                } else {
-                    state.users = action.payload.data.users;
-                    state.status = "succeeded";
-                    delete state.error;
-                }
+                state.now.data = action.payload.data;
+                state.now.status = "fulfilled";
+                delete state.now.error;
             })
             .addCase(getWeather.pending, (state, action) => {
-                state.status = "loading";
-                delete state.users;
+                state.now.status = "loading";
+                delete state.now.data;
+                delete state.now.error;
             })
             .addCase(getWeather.rejected, (state, action) => {
-                state.status = "failed";
-                state.error = action.error.message;
-                delete state.users;
+                state.now.status = "failed";
+                state.now.error = action.error.message;
+                delete state.now.data;
+            })
+            .addCase(getForecast.fulfilled, (state, action) => {
+                state.forecast.data = action.payload.data;
+                state.forecast.status = "fulfilled";
+                delete state.forecast.error;
+            })
+            .addCase(getForecast.pending, (state, action) => {
+                state.forecast.status = "loading";
+                delete state.forecast.data;
+                delete state.forecast.error;
+            })
+            .addCase(getForecast.rejected, (state, action) => {
+                console.log(action);
+                state.forecast.status = "failed";
+                state.forecast.error = action.error.message;
+                delete state.forecast.data;
             });
     },
 });
